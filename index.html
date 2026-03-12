@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo Selenium IDE – Locators, Waits, Assertions, Fixtures</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    .grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; align-items: start; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    label { display: block; font-size: 0.9rem; margin-top: 10px; }
+    input, select, button { padding: 8px 10px; border-radius: 8px; border: 1px solid #bbb; }
+    button { cursor: pointer; }
+    button.primary { border-color: #1b64d8; background: #1b64d8; color: white; }
+    button.warn { border-color: #c33; background: #fff; color: #c33; }
+    .muted { color: #666; font-size: 0.9rem; }
+    .pill { display:inline-block; padding: 2px 8px; border:1px solid #ccc; border-radius: 999px; font-size: 0.85rem; }
+    .ok { border-color: #2a8; color: #2a8; }
+    .bad { border-color: #c33; color: #c33; }
+    .spinner { display:none; margin-top: 10px; }
+    .spinner[aria-busy="true"] { display:block; }
+    .logs { height: 240px; overflow:auto; background:#0b1020; color:#cfe3ff; padding:10px; border-radius:10px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .small { font-size: 0.85rem; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .table th, .table td { border-bottom: 1px solid #eee; padding: 6px 4px; text-align: left; }
+    .hint { background: #fffbe6; border: 1px solid #f2d98b; padding: 10px; border-radius: 10px; }
+    .danger-zone { border: 1px dashed #c33; padding: 10px; border-radius: 10px; }
+    .fragile-ui { display:flex; gap:8px; align-items:center; margin-top: 8px; }
+    /* classes "générées" volontairement instables (pour montrer le piège) */
+    .g__a1b2c3 { background:#f5f5f5; padding:6px 10px; border-radius: 8px; }
+    .g__x9y8z7 { background:#f5f5f5; padding:6px 10px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+<h1>Démo Selenium IDE</h1>
+<p class="muted">
+  Objectif : un mini-flux “Traitement de commande” qui illustre :
+  <span class="pill">locators robustes</span>
+  <span class="pill">waits/synchronisation</span>
+  <span class="pill">assertions utiles</span>
+  <span class="pill">fixtures/reset + logs</span>
+</p>
+
+<div class="grid">
+
+  <!-- COLONNE GAUCHE : APP -->
+  <div class="card" data-testid="app-root">
+    <h2>Mini boutique</h2>
+
+    <div class="hint small">
+      <b>NB:</b> cette page contient volontairement des éléments “fragiles” (classes générées, index, structure).
+      Visez <b>id/name/data-testid/aria-label</b> et des sélecteurs ancrés sur l’intention.
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <span class="pill" id="buildLabel" data-testid="build-label">build: demo-2026</span>
+      <span class="pill" id="runIdLabel" data-testid="run-id">run: -</span>
+      <span class="pill" id="envLabel" data-testid="env-label">env: local</span>
+    </div>
+
+    <label for="userSelect">Utilisateur (fixture)</label>
+    <select id="userSelect" name="userSelect" data-testid="user-select" aria-label="Sélecteur utilisateur">
+      <!-- rempli via JS -->
+    </select>
+    <div class="row small muted">
+      <span data-testid="user-id">userId: -</span>
+      <span data-testid="user-tier">tier: -</span>
+    </div>
+
+    <label for="productSelect">Produit</label>
+    <select id="productSelect" name="productSelect" data-testid="product-select" aria-label="Sélecteur produit">
+      <option value="book" data-price="15.00">Livre – 15.00$</option>
+      <option value="mug" data-price="9.50">Tasse – 9.50$</option>
+      <option value="stickers" data-price="4.00">Autocollants – 4.00$</option>
+    </select>
+
+    <label for="qtyInput">Quantité</label>
+    <input id="qtyInput" name="qtyInput" data-testid="qty-input" aria-label="Quantité"
+           type="number" min="1" value="1"/>
+
+    <label for="promoInput">Code promo (optionnel)</label>
+    <input id="promoInput" name="promoInput" data-testid="promo-input" aria-label="Code promo"
+           placeholder="ex: VIP10 ou EXPIRED" />
+
+    <div class="row" style="margin-top: 12px;">
+      <button class="primary"
+              id="placeOrderBtn"
+              name="placeOrderBtn"
+              data-testid="place-order"
+              aria-label="Placer la commande">
+        Placer la commande
+      </button>
+
+      <button id="resetBtn" class="warn" data-testid="reset" aria-label="Réinitialiser les fixtures">
+        Reset fixtures
+      </button>
+
+      <label class="small" style="margin:0;">
+        <input type="checkbox" id="randomDelayToggle" data-testid="random-delay-toggle" />
+        Délai réseau aléatoire (pour montrer la flakiness)
+      </label>
+
+      <label class="small" style="margin:0;">
+        <input type="checkbox" id="forceFailToggle" data-testid="force-fail-toggle" />
+        Forcer échec paiement
+      </label>
+    </div>
+
+    <!-- zone d’attente / synchronisation -->
+    <div class="spinner" id="spinner" data-testid="spinner" aria-busy="false">
+      ⏳ Traitement en cours… (<span data-testid="wait-ms">0</span> ms)
+    </div>
+
+    <!-- résultat métier -->
+    <div style="margin-top: 14px;">
+      <h3>Résultat</h3>
+      <div class="row">
+        <span>Statut :</span>
+        <strong id="statusText" data-testid="order-status" aria-live="polite">-</strong>
+        <span class="pill" id="statusPill" data-testid="status-pill">—</span>
+      </div>
+
+      <div class="row small">
+        <span data-testid="order-id">orderId: -</span>
+        <span data-testid="order-total">total: -</span>
+        <span data-testid="order-discount">discount: -</span>
+      </div>
+
+      <p id="messageText" data-testid="order-message" class="muted" aria-live="polite">—</p>
+
+      <table class="table" aria-label="Détails commande" data-testid="order-table">
+        <thead><tr><th>Produit</th><th>Qté</th><th>Prix</th></tr></thead>
+        <tbody id="orderTbody"></tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <!-- Zone volontairement fragile (anti-pattern locators) -->
+    <div class="danger-zone">
+      <h3>Zone fragile (pour démonstration)</h3>
+      <div class="fragile-ui">
+        <span class="g__a1b2c3">Badge A</span>
+        <span class="g__x9y8z7">Badge B</span>
+        <span class="g__a1b2c3">Badge C</span>
+      </div>
+      <p class="small muted">
+        Ces classes “g__…” simulent des classes générées. Les sélectionner (ou utiliser des index CSS) est fragile.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- COLONNE DROITE : LOGS / DONNÉES -->
+  <div class="card">
+    <h2>Logs & données (pour rapports)</h2>
+
+    <div class="row small">
+      <span class="pill" data-testid="data-created">created: 0</span>
+      <span class="pill" data-testid="data-modified">modified: 0</span>
+      <span class="pill" data-testid="data-deleted">deleted: 0</span>
+    </div>
+
+    <p class="muted small">
+      Le but est d’illustrer : <b>tracer</b> quelles données ont été créées/modifiées,
+      et fournir du contexte (runId, URL, durées).
+    </p>
+
+    <div class="row">
+      <button id="downloadReportBtn" data-testid="download-report" aria-label="Télécharger rapport JSON">
+        Télécharger rapport JSON
+      </button>
+      <button id="clearLogsBtn" data-testid="clear-logs" aria-label="Effacer logs">Effacer logs</button>
+    </div>
+
+    <h3 class="small">Console applicative</h3>
+    <div class="logs" id="logBox" data-testid="log-box" aria-label="Logs applicatifs"></div>
+
+    <p class="small muted" style="margin-top: 10px;">
+      <b>Pour Selenium IDE</b> : à l’échec, on peut prendre une capture d’écran.
+      Les logs ci-dessus aident à regrouper les échecs “par cause”.
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // -------------------------------
+  // Fixtures "réinitialisables"
+  // -------------------------------
+  const FIXTURES = {
+    users: [
+      { id: "u100", name: "Alice", tier: "VIP" },
+      { id: "u200", name: "Bob", tier: "STANDARD" },
+      { id: "u300", name: "Chloé", tier: "STANDARD" }
+    ],
+    promos: {
+      VIP10: { type: "PERCENT", value: 10, expiresAt: "2099-01-01T00:00:00Z" },
+      EXPIRED: { type: "PERCENT", value: 20, expiresAt: "2000-01-01T00:00:00Z" }
+    }
+  };
+
+  // "DB" locale simulée (pour montrer création/modif/suppression + reset)
+  const store = {
+    orders: [],
+    counters: { created: 0, modified: 0, deleted: 0 }
+  };
+
+  // "Clock" injectable
+  const Clock = {
+    now: () => new Date(),
+    // pour extension en cours (si vous voulez figer l'heure)
+    setNow: null
+  };
+
+  const els = {
+    userSelect: document.getElementById("userSelect"),
+    productSelect: document.getElementById("productSelect"),
+    qtyInput: document.getElementById("qtyInput"),
+    promoInput: document.getElementById("promoInput"),
+    placeOrderBtn: document.getElementById("placeOrderBtn"),
+    resetBtn: document.getElementById("resetBtn"),
+    randomDelayToggle: document.getElementById("randomDelayToggle"),
+    forceFailToggle: document.getElementById("forceFailToggle"),
+    spinner: document.getElementById("spinner"),
+    waitMs: document.querySelector('[data-testid="wait-ms"]'),
+    statusText: document.getElementById("statusText"),
+    statusPill: document.getElementById("statusPill"),
+    messageText: document.getElementById("messageText"),
+    orderId: document.querySelector('[data-testid="order-id"]'),
+    orderTotal: document.querySelector('[data-testid="order-total"]'),
+    orderDiscount: document.querySelector('[data-testid="order-discount"]'),
+    orderTbody: document.getElementById("orderTbody"),
+    logBox: document.getElementById("logBox"),
+    clearLogsBtn: document.getElementById("clearLogsBtn"),
+    downloadReportBtn: document.getElementById("downloadReportBtn"),
+    runIdLabel: document.getElementById("runIdLabel"),
+    userId: document.querySelector('[data-testid="user-id"]'),
+    userTier: document.querySelector('[data-testid="user-tier"]'),
+    dataCreated: document.querySelector('[data-testid="data-created"]'),
+    dataModified: document.querySelector('[data-testid="data-modified"]'),
+    dataDeleted: document.querySelector('[data-testid="data-deleted"]')
+  };
+
+  // runId pour contextualiser les rapports
+  const runId = `r-${Math.random().toString(16).slice(2, 8)}-${Date.now()}`;
+  els.runIdLabel.textContent = `run: ${runId}`;
+
+  // logging utilitaire
+  const log = (level, msg, meta = {}) => {
+    const line = {
+      t: new Date().toISOString(),
+      level,
+      msg,
+      ...meta
+    };
+    els.logBox.textContent += JSON.stringify(line, null, 2) + "\n";
+    els.logBox.scrollTop = els.logBox.scrollHeight;
+    // aussi dans console navigateur
+    console.log(`[${level}] ${msg}`, meta);
+  };
+
+  const updateCounters = () => {
+    els.dataCreated.textContent = `created: ${store.counters.created}`;
+    els.dataModified.textContent = `modified: ${store.counters.modified}`;
+    els.dataDeleted.textContent = `deleted: ${store.counters.deleted}`;
+  };
+
+  const setBusy = (busy, startTs = null) => {
+    els.spinner.setAttribute("aria-busy", busy ? "true" : "false");
+    if (!busy) els.waitMs.textContent = "0";
+    if (busy && startTs) {
+      const tick = () => {
+        if (els.spinner.getAttribute("aria-busy") !== "true") return;
+        els.waitMs.textContent = String(Math.max(0, Math.round(performance.now() - startTs)));
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  };
+
+  const setStatus = (status, message, details = {}) => {
+    els.statusText.textContent = status;
+    els.messageText.textContent = message;
+
+    const ok = status === "SUCCESS";
+    els.statusPill.textContent = ok ? "OK" : "ERROR";
+    els.statusPill.className = "pill " + (ok ? "ok" : "bad");
+
+    if (details.orderId) els.orderId.textContent = `orderId: ${details.orderId}`;
+    if (details.total != null) els.orderTotal.textContent = `total: ${details.total.toFixed(2)}$`;
+    if (details.discount != null) els.orderDiscount.textContent = `discount: ${details.discount.toFixed(2)}$`;
+  };
+
+  const renderOrderTable = (order) => {
+    els.orderTbody.innerHTML = "";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${order.product}</td>
+      <td>${order.qty}</td>
+      <td>${order.unitPrice.toFixed(2)}$</td>
+    `;
+    els.orderTbody.appendChild(tr);
+  };
+
+  const getSelectedUser = () => {
+    const id = els.userSelect.value;
+    return FIXTURES.users.find(u => u.id === id);
+  };
+
+  const refreshUserInfo = () => {
+    const user = getSelectedUser();
+    els.userId.textContent = `userId: ${user?.id ?? "-"}`;
+    els.userTier.textContent = `tier: ${user?.tier ?? "-"}`;
+  };
+
+  const resetFixtures = () => {
+    store.orders = [];
+    store.counters = { created: 0, modified: 0, deleted: 0 };
+    updateCounters();
+
+    els.promoInput.value = "";
+    els.qtyInput.value = 1;
+    els.productSelect.value = "book";
+    els.forceFailToggle.checked = false;
+    els.randomDelayToggle.checked = false;
+
+    els.orderId.textContent = "orderId: -";
+    els.orderTotal.textContent = "total: -";
+    els.orderDiscount.textContent = "discount: -";
+    els.orderTbody.innerHTML = "";
+
+    setStatus("-", "—");
+    log("INFO", "Reset fixtures", { runId, url: location.href });
+  };
+
+  // Simule un "PaymentGateway HTTP"
+  const PaymentGateway = {
+    charge: async ({ amount }) => {
+      // délai "réseau"
+      const base = 450;
+      const jitter = els.randomDelayToggle.checked ? Math.floor(Math.random() * 800) : 0; // 0..800
+      const delayMs = base + jitter;
+
+      await new Promise(r => setTimeout(r, delayMs));
+
+      if (els.forceFailToggle.checked) {
+        return { ok: false, code: "DECLINED", message: "Paiement refusé" };
+      }
+      // réussite
+      return { ok: true, authCode: "AUTH-" + Math.random().toString(16).slice(2, 6) };
+    }
+  };
+
+  // DiscountPolicy (pure-ish)
+  const DiscountPolicy = {
+    computeDiscount: ({ user, unitPrice, qty, promoCode }) => {
+      const subtotal = unitPrice * qty;
+      let percent = 0;
+
+      // VIP : 10% si subtotal >= 10
+      if (user.tier === "VIP" && subtotal >= 10) percent = Math.max(percent, 10);
+
+      // promoCode
+      if (promoCode) {
+        const promo = FIXTURES.promos[promoCode.trim().toUpperCase()];
+        if (promo) {
+          const now = Clock.now();
+          const exp = new Date(promo.expiresAt);
+          if (now <= exp) {
+            if (promo.type === "PERCENT") percent = Math.max(percent, promo.value);
+          }
+        }
+      }
+
+      return subtotal * (percent / 100);
+    }
+  };
+
+  // OrderRepository + "DB"
+  const OrderRepository = {
+    save: (order) => {
+      store.orders.push(order);
+      store.counters.created += 1;
+      updateCounters();
+      return order;
+    }
+  };
+
+  // EmailSender (doublé dans une vraie app; ici juste log)
+  const EmailSender = {
+    send: ({ toUserId, subject }) => {
+      // Dans une vraie intégration, ceci serait un adaptateur externe
+      log("INFO", "EmailSender.send", { toUserId, subject });
+      store.counters.modified += 1; // juste pour illustrer "trace"
+      updateCounters();
+    }
+  };
+
+  // OrderService (orchestration)
+  const OrderService = {
+    placeOrder: async ({ user, product, qty, unitPrice, promoCode }) => {
+      const start = performance.now();
+      log("INFO", "OrderService.placeOrder:start", { userId: user.id, product, qty, promoCode });
+
+      // Règles de base (assertion "métier" possible côté test)
+      if (qty <= 0) {
+        return { ok: false, error: "INVALID_QTY", message: "Quantité invalide" };
+      }
+
+      const discount = DiscountPolicy.computeDiscount({ user, unitPrice, qty, promoCode });
+      const subtotal = unitPrice * qty;
+      const total = Math.max(0, subtotal - discount);
+
+      // paiement
+      const payRes = await PaymentGateway.charge({ amount: total });
+
+      if (!payRes.ok) {
+        const ms = Math.round(performance.now() - start);
+        log("WARN", "Payment failed", { code: payRes.code, ms });
+        return { ok: false, error: "PAYMENT_FAILED", message: payRes.message, ms };
+      }
+
+      const order = {
+        id: "o-" + Math.random().toString(16).slice(2, 7),
+        userId: user.id,
+        product,
+        qty,
+        unitPrice,
+        discount,
+        total,
+        status: "CONFIRMED",
+        createdAt: Clock.now().toISOString()
+      };
+
+      OrderRepository.save(order);
+      EmailSender.send({ toUserId: user.id, subject: "Confirmation commande " + order.id });
+
+      const ms = Math.round(performance.now() - start);
+      log("INFO", "Order placed", { orderId: order.id, total, discount, ms });
+
+      return { ok: true, order, ms };
+    }
+  };
+
+  // UI hookup
+  const populateUsers = () => {
+    els.userSelect.innerHTML = "";
+    for (const u of FIXTURES.users) {
+      const opt = document.createElement("option");
+      opt.value = u.id;
+      opt.textContent = `${u.name} (${u.tier})`;
+      els.userSelect.appendChild(opt);
+    }
+    els.userSelect.value = FIXTURES.users[0].id;
+    refreshUserInfo();
+  };
+
+  els.userSelect.addEventListener("change", refreshUserInfo);
+
+  els.placeOrderBtn.addEventListener("click", async () => {
+    const user = getSelectedUser();
+    const productOpt = els.productSelect.selectedOptions[0];
+    const product = els.productSelect.value;
+    const unitPrice = parseFloat(productOpt.getAttribute("data-price"));
+    const qty = parseInt(els.qtyInput.value, 10);
+    const promoCode = els.promoInput.value;
+
+    // reset UI result for this run
+    setStatus("-", "Traitement…");
+    els.orderTbody.innerHTML = "";
+
+    const startTs = performance.now();
+    setBusy(true, startTs);
+
+    try {
+      const res = await OrderService.placeOrder({ user, product, qty, unitPrice, promoCode });
+
+      if (!res.ok) {
+        setStatus("ERROR", res.message, { orderId: "-", total: 0, discount: 0 });
+        log("ERROR", "Order failed", { error: res.error, ms: res.ms });
+        return;
+      }
+
+      renderOrderTable(res.order);
+      setStatus("SUCCESS", `Commande confirmée en ${res.ms} ms`, {
+        orderId: res.order.id,
+        total: res.order.total,
+        discount: res.order.discount
+      });
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  els.resetBtn.addEventListener("click", resetFixtures);
+
+  els.clearLogsBtn.addEventListener("click", () => {
+    els.logBox.textContent = "";
+    log("INFO", "Logs cleared", { runId });
+  });
+
+  els.downloadReportBtn.addEventListener("click", () => {
+    const report = {
+      runId,
+      url: location.href,
+      timestamp: new Date().toISOString(),
+      counters: store.counters,
+      orders: store.orders,
+      // bonus: "durées attendues" (observable via UI wait-ms + logs)
+      notes: "Rapport généré par la page de démo"
+    };
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `report-${runId}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    log("INFO", "Report downloaded", { runId });
+  });
+
+  // Expose quelques helpers pour démo/teaching
+  window.demo = {
+    resetFixtures,
+    store,
+    FIXTURES,
+    setForceFail: (v) => els.forceFailToggle.checked = !!v,
+    setRandomDelay: (v) => els.randomDelayToggle.checked = !!v
+  };
+
+  // init
+  populateUsers();
+  resetFixtures();
+  log("INFO", "App initialized", { runId, url: location.href });
+</script>
+
+</body>
+</html>
