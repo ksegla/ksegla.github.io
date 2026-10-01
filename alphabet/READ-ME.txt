@@ -1,0 +1,63 @@
+MON ALPHABET EN FAMILLE — VOICES AND VIDEOS
+
+LAPTOP TEST (no public hosting needed)
+1. Extract this ZIP into a normal folder.
+2. On Windows, double-click start-laptop.cmd. Python 3 must be installed.
+   Or open a terminal in the folder and run:
+     Windows:  py -3 start-laptop.py
+     macOS/Linux: python3 start-laptop.py
+3. Open http://localhost:8000 in Chrome on that same laptop.
+   Keep using this same address and port to retain the same browser storage.
+4. Choose Parents > Voix et videos > Video avec voix > Ouvrir la camera.
+   Allow microphone and camera access. Preview, then Demarrer la video.
+5. Stop, preview your clip, and choose Conserver ce clip.
+
+A separate audio clip and video can be kept for each person and word.
+The video plays when a letter is opened. Parents > Affichage > Videos de famille
+switches to sound only. In the poster's listen-only mode, only sound is played.
+Direct recordings stop after 30 seconds. Imported videos can be up to 60 seconds
+and 25 MB; the browser must support the codec. MP4 and WebM are suggested.
+You can record in another app and use Importer une video if device access fails.
+
+The localhost server listens on this laptop only. Its address does not let a
+tablet connect to the laptop. Use an HTTPS host when you want tablet access.
+Opening index.html directly still supports playback and clip import, but PWA
+installation and direct microphone/camera access require an appropriate origin.
+
+OFFLINE USE
+Wait for Pret hors ligne before disconnecting. Install from Chrome's menu if you
+want an application shortcut. The cached app and locally stored clips work offline.
+If this is an update to a previous installation, choose Parents > Sauvegarde >
+Mettre a jour l'alphabet. Finish or discard any pending recording first.
+
+FAMILY DATA AND BACKUPS
+Photos, audio and videos stay in this browser on this device; the application does
+not upload them. They do not automatically follow you to a different URL or device.
+Use Parents > Sauvegarde > Sauvegarder les clips, then Importer une sauvegarde at
+the destination. Old audio-only JSON backups remain supported. New backups include
+both audio and videos. Import replaces the current family collection after confirmation.
+Exporter mon alphabet creates a standalone HTML copy containing the entire family
+collection. Videos make these exported files larger. Keep backups outside the browser.
+
+LATER: GITHUB PAGES OR ANOTHER STATIC HTTPS HOST
+The ready-to-host application files are:
+  index.html, sw.js, manifest.webmanifest, icon.svg, icon-192.png, icon-512.png,
+  and .nojekyll (included in this ZIP, sometimes hidden by the file manager).
+No build, application server, account system, or backend database is required.
+
+For GitHub Pages, place those files at your repository's publishing root, then
+choose that branch and root folder under Settings > Pages. Use the HTTPS URL
+GitHub provides. All application paths are relative, including service-worker scope,
+so a project URL such as https://USERNAME.github.io/REPOSITORY/ is supported.
+Do not upload a personalized HTML export or a family backup to a public repository.
+Use the blank index.html from this ZIP and import family clips privately in the app.
+
+Changing host changes the browser storage origin. Export first, then import at the
+new address. Keep the old copy until you have checked the imported collection.
+
+Permissions help in the parent studio reports detected secure-context or hosting
+policy restrictions. It cannot override Chrome, operating-system, or hosting policy.
+
+Documentation:
+https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
+https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
