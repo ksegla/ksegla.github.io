@@ -1,4 +1,4 @@
-MON ALPHABET EN FAMILLE — LETTERS, SYLLABLES AND WORDS
+MON ALPHABET EN FAMILLE — SHARED MEDIA AND PLAYLISTS
 
 LAPTOP TEST (no public hosting needed)
 1. Extract this ZIP into a normal folder.
@@ -23,7 +23,22 @@ les modifications to save, or Enregistrer sa voix ou video to open the studio.
 The original letter illustrations stay available alongside your additions.
 New syllables and custom words need a family recording for pronunciation.
 
-A separate audio clip and video can be kept for each person and entry.
+WORD MEDIA AND PEOPLE
+Open any word and choose + Image, + Voix or + Video to add media directly.
+The studio opens on the matching word. Start the microphone or camera explicitly.
+Each word can keep several voice clips and video takes. Nouveau clip adds a take
+without replacing the previous ones. Select a saved clip and check its people
+under Qui parle ou apparait ? Changes save automatically. A clip can involve
+several family members and appears in each person's video filter.
+
+On the main screen, Videos avec selects a person and shows only content with a
+video involving that person. Tout voir clears the filter. Tout lire plays the
+matching clips from the current category consecutively. Choose Videos or Son seul;
+with a person filter, Son seul plays only the qualifying videos' soundtracks.
+Pause/Continuer, Precedent, Suivant and Arreter control the sequence. Closing the
+word stops it. After an interruption, Continue may restart the current clip.
+
+Several audio clips and videos can be kept for each entry.
 The video plays when a letter is opened. Parents > Affichage > Videos de famille
 switches to sound only. In the poster's listen-only mode, only sound is played.
 Direct recordings stop after 30 seconds. Imported videos can be up to 60 seconds
@@ -45,8 +60,8 @@ FAMILY DATA AND BACKUPS
 Photos, audio and videos stay in this browser on this device; the application does
 not upload them. They do not automatically follow you to a different URL or device.
 Use Parents > Sauvegarde > Sauvegarder le contenu et les clips, then Importer une sauvegarde at
-the destination. Old audio-only JSON backups remain supported. New backups include
-all custom content, pictures, audio and videos. Import replaces the current family collection after confirmation.
+the destination. Earlier v1, v2 and v3 JSON backups remain supported. New backups include
+all custom content, pictures, audio, videos and shared recorder assignments. Import replaces the current family collection after confirmation.
 Exporter mon alphabet creates a standalone HTML copy containing the entire family
 collection. Videos make these exported files larger. Keep backups outside the browser.
 
