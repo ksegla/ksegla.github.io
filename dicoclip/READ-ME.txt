@@ -1,4 +1,4 @@
-MON ALPHABET EN FAMILLE — SHARED MEDIA AND PLAYLISTS
+MON ALPHABET EN FAMILLE — ALL COLLECTIONS AND CONTINUOUS PLAYLISTS
 
 LAPTOP TEST (no public hosting needed)
 1. Extract this ZIP into a normal folder.
@@ -12,16 +12,21 @@ LAPTOP TEST (no public hosting needed)
    Allow microphone and camera access. Preview, then Demarrer la video.
 5. Stop, preview your clip, and choose Conserver ce clip.
 
-THREE CATEGORIES
+SIX TABS
 Lettres keeps the 26-letter poster. Syllabes starts with 20 syllables, and Mots
-with 12 illustrated words. Use the category buttons above the cards to switch.
+with 12 illustrated words. Nombres starts with 0 to 20. Noms propres is ready
+for your family's names, places and photos. Tout combines all five collections.
+Use Tout > Tout lire to watch videos across every category. Original words shared
+between Lettres and Mots, and videos assigned to multiple people, play only once.
 
-Parents > Contenu lets you add or edit words, syllables and pictures.
+Parents > Contenu lets you add or edit words, syllables, numbers, proper nouns
+and pictures. Tout updates automatically; content is edited in its original category.
 For Lettres, select the letter, then Nouveau mot or an existing word.
 Attach up to 12 pictures per entry; images are optional. Select Enregistrer
 les modifications to save, or Enregistrer sa voix ou video to open the studio.
 The original letter illustrations stay available alongside your additions.
-New syllables and custom words need a family recording for pronunciation.
+New syllables, numbers, proper nouns and custom words need a family recording
+for pronunciation. Numbers and proper nouns have separate, stable recording keys.
 
 WORD MEDIA AND PEOPLE
 Open any word and choose + Image, + Voix or + Video to add media directly.
@@ -31,12 +36,25 @@ without replacing the previous ones. Select a saved clip and check its people
 under Qui parle ou apparait ? Changes save automatically. A clip can involve
 several family members and appears in each person's video filter.
 
-On the main screen, Videos avec selects a person and shows only content with a
-video involving that person. Tout voir clears the filter. Tout lire plays the
-matching clips from the current category consecutively. Choose Videos or Son seul;
-with a person filter, Son seul plays only the qualifying videos' soundtracks.
+On the main screen, Videos avec lets you check several people. Only content with
+a video involving at least one checked person is shown. Toute la famille clears
+the selection. A shared video is included once. Tout lire plays the matching clips
+from the current category consecutively; the Tout tab includes all categories.
+Choose Videos or Son seul; with people selected, Son seul plays only the qualifying
+videos' soundtracks. With no selection, Son seul includes saved voices and videos.
 Pause/Continuer, Precedent, Suivant and Arreter control the sequence. Closing the
-word stops it. After an interruption, Continue may restart the current clip.
+word keeps it playing through the small playback bar. You can browse tabs and
+pages without losing the list. Touching a recorded word jumps to it in the list;
+a new recorded word outside that list is inserted next, and the rest continues.
+A card without a suitable clip leaves the current video playing. Revoir or the
+image replays the current clip and preserves the rest of the list. Arreter stops it.
+
+In the word view, use Plein ecran beside Revoir. This player keeps the image at
+the top left and the word, playlist and transport controls on screen. The same
+video element and list continue through fullscreen transitions. Reduire returns
+to the word view. If the browser does not offer native fullscreen, the player
+fills the page instead. A hidden/background tab pauses playback; Continuer may
+restart the interrupted clip when you return.
 
 Several audio clips and videos can be kept for each entry.
 The video plays when a letter is opened. Parents > Affichage > Videos de famille
@@ -60,8 +78,11 @@ FAMILY DATA AND BACKUPS
 Photos, audio and videos stay in this browser on this device; the application does
 not upload them. They do not automatically follow you to a different URL or device.
 Use Parents > Sauvegarde > Sauvegarder le contenu et les clips, then Importer une sauvegarde at
-the destination. Earlier v1, v2 and v3 JSON backups remain supported. New backups include
+the destination. Earlier v1, v2, v3 and v4 JSON backups remain supported. New v5 backups include
 all custom content, pictures, audio, videos and shared recorder assignments. Import replaces the current family collection after confirmation.
+Old backups automatically gain the new number and proper-noun sections. Existing
+clips, pictures, profiles and assignments are retained. Explicit empty sections
+stay empty. Do not import a v5 backup into an older app version.
 Exporter mon alphabet creates a standalone HTML copy containing the entire family
 collection. Videos make these exported files larger. Keep backups outside the browser.
 
