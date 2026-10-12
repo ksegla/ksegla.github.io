@@ -1,4 +1,4 @@
-MON ALPHABET EN FAMILLE — ALL COLLECTIONS AND CONTINUOUS PLAYLISTS
+MON ALPHABET EN FAMILLE — SOUND, LOOP OPTIONS AND YOUTUBE ILLUSTRATIONS
 
 LAPTOP TEST (no public hosting needed)
 1. Extract this ZIP into a normal folder.
@@ -56,6 +56,44 @@ to the word view. If the browser does not offer native fullscreen, the player
 fills the page instead. A hidden/background tab pauses playback; Continuer may
 restart the interrupted clip when you return.
 
+ILLUSTRATION VIDEO OPTIONS
+Open a word > + Animation to open its entry. Import a video file, or paste a
+YouTube link under Ou ajouter une video YouTube. Add it and save the edit.
+The studio also has + Video d'illustration. + Video de famille remains the
+speaking family video. You can keep up to 3 illustration sources per entry.
+Conserver le son and Lecture en boucle are independent checkboxes under each
+source. Utiliser par defaut promotes a source to the first position.
+
+Imported files must be browser-readable, up to 60 seconds and 25 MB each.
+The first illustration is used by default; original pictures remain selectable.
+Sound plays in the word view and editor preview; cards stay muted. If both
+illustration and family sound are enabled, they can play at the same time.
+With looping off, the illustration plays once and stays finished. Use Revoir
+l'illustration to restart it, or Pause illustration / Lire l'illustration to
+pause/resume independently. The family playlist remains intact. Fullscreen
+keeps both players and the illustration at the top left.
+
+Imported clips and their options are embedded in JSON/HTML backups and work
+offline. V6 strings migrate to muted, looping file sources in V7 automatically.
+Existing family clips, pictures, profiles and assignments remain unchanged.
+
+YOUTUBE
+Paste a single-video watch, youtu.be, Shorts, live or embed link. Saving only
+stores the video ID and options. Press Play in the word view/editor to load
+YouTube. The official player uses privacy-enhanced mode, visible controls and
+a viewport of at least 200x200 pixels. It never enters or advances the family
+queue. Sound and loop settings apply to YouTube sources too.
+
+YouTube requires internet and a page opened on HTTPS or localhost. Local file
+or content URLs cannot supply the required HTTP referrer; imported files still
+work there. Backups contain the YouTube link, not an offline copy of the video.
+Some videos block embedding or are unavailable; the app reports the problem
+while leaving family playback intact. YouTube controls its ads and suggestions.
+Use the app's fullscreen button to keep the family video and YouTube together.
+Official guidance: https://support.google.com/youtube/answer/171780
+It includes child-directed self-designation requirements for public child-directed
+services embedding YouTube, even when using privacy-enhanced mode.
+
 Several audio clips and videos can be kept for each entry.
 The video plays when a letter is opened. Parents > Affichage > Videos de famille
 switches to sound only. In the poster's listen-only mode, only sound is played.
@@ -78,11 +116,11 @@ FAMILY DATA AND BACKUPS
 Photos, audio and videos stay in this browser on this device; the application does
 not upload them. They do not automatically follow you to a different URL or device.
 Use Parents > Sauvegarde > Sauvegarder le contenu et les clips, then Importer une sauvegarde at
-the destination. Earlier v1, v2, v3 and v4 JSON backups remain supported. New v5 backups include
+the destination. Earlier v1, v2, v3, v4, v5 and v6 JSON backups remain supported. New v7 backups include
 all custom content, pictures, audio, videos and shared recorder assignments. Import replaces the current family collection after confirmation.
 Old backups automatically gain the new number and proper-noun sections. Existing
 clips, pictures, profiles and assignments are retained. Explicit empty sections
-stay empty. Do not import a v5 backup into an older app version.
+stay empty. Do not import a v7 backup into an older app version.
 Exporter mon alphabet creates a standalone HTML copy containing the entire family
 collection. Videos make these exported files larger. Keep backups outside the browser.
 
