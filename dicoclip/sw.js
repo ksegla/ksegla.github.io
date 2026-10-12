@@ -1,7 +1,7 @@
 'use strict';
 // The app, art, fonts and demo audio are embedded in one HTML response. Family
 // recordings are kept separately in IndexedDB and never pass through this worker.
-const VERSION='e7b9f2b74bd5e615';
+const VERSION='ef71f9513ec3a374';
 const PREFIX='dicoclip-alphabet-shell-';
 const CACHE=PREFIX+VERSION;
 const BASE=self.registration.scope;

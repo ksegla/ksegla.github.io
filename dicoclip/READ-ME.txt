@@ -1,4 +1,4 @@
-MON ALPHABET EN FAMILLE — SOUND, LOOP OPTIONS AND YOUTUBE ILLUSTRATIONS
+MON ALPHABET EN FAMILLE — VIDEO EXCERPTS AND FAMILY PROFILES
 
 LAPTOP TEST (no public hosting needed)
 1. Extract this ZIP into a normal folder.
@@ -18,6 +18,13 @@ with 12 illustrated words. Nombres starts with 0 to 20. Noms propres is ready
 for your family's names, places and photos. Tout combines all five collections.
 Use Tout > Tout lire to watch videos across every category. Original words shared
 between Lettres and Mots, and videos assigned to multiple people, play only once.
+
+Nouvelle entree, on the right of the home menu, opens Zone Parents > Contenu
+on a blank entry in the current category (Tout opens Mots).
+
+Parents > Profils de famille manages names and photos. Each recording can still
+have several people assigned in Voix et videos. Selecting a profile sets the
+default person for a new recording.
 
 Parents > Contenu lets you add or edit words, syllables, numbers, proper nouns
 and pictures. Tout updates automatically; content is edited in its original category.
@@ -61,8 +68,9 @@ Open a word > + Animation to open its entry. Import a video file, or paste a
 YouTube link under Ou ajouter une video YouTube. Add it and save the edit.
 The studio also has + Video d'illustration. + Video de famille remains the
 speaking family video. You can keep up to 3 illustration sources per entry.
-Conserver le son and Lecture en boucle are independent checkboxes under each
-source. Utiliser par defaut promotes a source to the first position.
+Each source has Debut, Fin and Lecture en boucle. Enter seconds or 1:30.
+An empty Fin means the natural end. Fin must be after Debut. Voir l’extrait
+previews the interval. Imported files also have Conserver le son. Utiliser par defaut promotes a source to the first position.
 
 Imported files must be browser-readable, up to 60 seconds and 25 MB each.
 The first illustration is used by default; original pictures remain selectable.
@@ -74,15 +82,21 @@ pause/resume independently. The family playlist remains intact. Fullscreen
 keeps both players and the illustration at the top left.
 
 Imported clips and their options are embedded in JSON/HTML backups and work
-offline. V6 strings migrate to muted, looping file sources in V7 automatically.
+offline. V6 strings migrate to muted looping files; V7 sources gain default
+start/end times in V8 automatically.
 Existing family clips, pictures, profiles and assignments remain unchanged.
 
 YOUTUBE
 Paste a single-video watch, youtu.be, Shorts, live or embed link. Saving only
-stores the video ID and options. Press Play in the word view/editor to load
-YouTube. The official player uses privacy-enhanced mode, visible controls and
+stores the video ID and options. URL t/start/end timestamps fill the excerpt
+times automatically. The actual video thumbnail appears on the card when online.
+The video starts automatically and muted when its word opens. Enable sound
+with the YouTube player’s own speaker control; the app preserves that choice
+through loops and fullscreen. In the editor, choose Voir l’extrait to preview.
+If the browser blocks autoplay, use Lecture inside YouTube. The official player uses privacy-enhanced mode, visible controls and
 a viewport of at least 200x200 pixels. It never enters or advances the family
-queue. Sound and loop settings apply to YouTube sources too.
+queue. Only the selected Debut-to-Fin interval repeats. Without looping, it
+stays finished until replayed. Video illustrations have no white frame.
 
 YouTube requires internet and a page opened on HTTPS or localhost. Local file
 or content URLs cannot supply the required HTTP referrer; imported files still
@@ -116,11 +130,11 @@ FAMILY DATA AND BACKUPS
 Photos, audio and videos stay in this browser on this device; the application does
 not upload them. They do not automatically follow you to a different URL or device.
 Use Parents > Sauvegarde > Sauvegarder le contenu et les clips, then Importer une sauvegarde at
-the destination. Earlier v1, v2, v3, v4, v5 and v6 JSON backups remain supported. New v7 backups include
+the destination. Earlier v1, v2, v3, v4, v5, v6 and v7 JSON backups remain supported. New v8 backups include
 all custom content, pictures, audio, videos and shared recorder assignments. Import replaces the current family collection after confirmation.
 Old backups automatically gain the new number and proper-noun sections. Existing
 clips, pictures, profiles and assignments are retained. Explicit empty sections
-stay empty. Do not import a v7 backup into an older app version.
+stay empty. Do not import a v8 backup into an older app version.
 Exporter mon alphabet creates a standalone HTML copy containing the entire family
 collection. Videos make these exported files larger. Keep backups outside the browser.
 
